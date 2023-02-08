@@ -10,19 +10,7 @@ export default function Header() {
   const [token, setToken] = useRecoilState<string>(authState);
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
-  const logoutHandler = () => {
-    setToken('');
-    setUser({
-      isAuthenticated: false,
-      uid: '',
-      email: '',
-      displayName: '',
-      photoURL: '',
-    });
-    localStorage.removeItem('accessToken');
-    alert('로그아웃 성공!');
-    router.push('/home');
-  };
+
   useEffect(() => {
     if (token.length > 0) {
       const data = formatJWTtoJSON(localStorage.getItem('accessToken') || '');
@@ -44,6 +32,8 @@ export default function Header() {
           displayName: data.name,
           photoURL: data.picture,
         });
+      } else {
+        router.push('/auth/login');
       }
     }
   }, [token]);
@@ -51,24 +41,12 @@ export default function Header() {
     <header>
       <div className="header-wrap">
         <NavBar />
-        {user.isAuthenticated ? (
-          <>
-            <p>Hello, {user.displayName}!!</p>
-            <img src={user.photoURL} alt="profile-img" />
-            <button onClick={logoutHandler}>로그 아웃</button>
-          </>
-        ) : (
-          <Link href="/auth/login">로그인</Link>
-        )}
       </div>
       <style jsx>{`
         .header-wrap {
           display: flex;
           align-items: center;
           justify-content: space-between;
-        }
-        img {
-          width: 50px;
         }
       `}</style>
     </header>

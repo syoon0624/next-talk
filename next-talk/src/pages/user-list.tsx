@@ -17,25 +17,28 @@ export default function UserList() {
   const [users, setUsers] = useState<User[]>([]);
   const [user, setUser] = useRecoilState(userState);
   const router = useRouter();
+
   useEffect(() => {
-    if (localStorage.getItem('accessToken')) {
-      const getUserList = async () => {
-        let arr = [];
-        const data = await getUsers();
-        if (data) {
-          for (let i of Object.keys(data)) {
-            const obj = { uid: i, ...data[i] };
-            arr.push(obj);
+    if (user) {
+      if (localStorage.getItem('accessToken')) {
+        const getUserList = async () => {
+          let arr = [];
+          const data = await getUsers();
+          if (data) {
+            for (let i of Object.keys(data)) {
+              const obj = { uid: i, ...data[i] };
+              arr.push(obj);
+            }
           }
-        }
-        setUsers(arr);
-      };
-      getUserList();
-    } else {
-      alert('로그인을 먼저 해주세요!');
-      router.push('/auth/login');
+          setUsers(arr);
+        };
+        getUserList();
+      } else {
+        alert('로그인을 먼저 해주세요!');
+        router.push('/auth/login');
+      }
     }
-  }, []);
+  }, [user]);
   return (
     <>
       <Seo title="User List" />

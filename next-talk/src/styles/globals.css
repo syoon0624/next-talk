@@ -132,7 +132,12 @@ a {
   text-decoration: none;
 }
 
-body {
+body > div {
+  height: 95vh;
   max-width: 600px;
   margin: 0 auto;
+  margin-top: 2.5vh;
+  border-radius: 20px;
+  background-color: #f6f1cb;
+  box-shadow: 5px 5px 5px 5px gray;
 }
